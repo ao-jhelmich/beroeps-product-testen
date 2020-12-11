@@ -1,0 +1,8 @@
+/Users/jasper/Code/Shop/Shop/bin/Debug/netcoreapp3.1/Shop.deps.json
+/Users/jasper/Code/Shop/Shop/bin/Debug/netcoreapp3.1/Shop.dll
+/Users/jasper/Code/Shop/Shop/bin/Debug/netcoreapp3.1/Shop.pdb
+/Users/jasper/Code/Shop/Shop/obj/Debug/netcoreapp3.1/Shop.csprojAssemblyReference.cache
+/Users/jasper/Code/Shop/Shop/obj/Debug/netcoreapp3.1/Shop.AssemblyInfoInputs.cache
+/Users/jasper/Code/Shop/Shop/obj/Debug/netcoreapp3.1/Shop.AssemblyInfo.cs
+/Users/jasper/Code/Shop/Shop/obj/Debug/netcoreapp3.1/Shop.dll
+/Users/jasper/Code/Shop/Shop/obj/Debug/netcoreapp3.1/Shop.pdb
