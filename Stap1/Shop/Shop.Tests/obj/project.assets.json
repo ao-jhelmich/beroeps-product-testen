@@ -4649,11 +4649,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/jasper/Code/Shop/Shop.Tests/Shop.Tests.csproj",
+      "projectUniqueName": "/Users/jasper/Code/beroeps-product-testen/Stap1/Shop/Shop.Tests/Shop.Tests.csproj",
       "projectName": "Shop.Tests",
-      "projectPath": "/Users/jasper/Code/Shop/Shop.Tests/Shop.Tests.csproj",
+      "projectPath": "/Users/jasper/Code/beroeps-product-testen/Stap1/Shop/Shop.Tests/Shop.Tests.csproj",
       "packagesPath": "/Users/jasper/.nuget/packages/",
-      "outputPath": "/Users/jasper/Code/Shop/Shop.Tests/obj/",
+      "outputPath": "/Users/jasper/Code/beroeps-product-testen/Stap1/Shop/Shop.Tests/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/jasper/.config/NuGet/NuGet.Config"
@@ -4667,8 +4667,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "/Users/jasper/Code/Shop/Shop/Shop.csproj": {
-              "projectPath": "/Users/jasper/Code/Shop/Shop/Shop.csproj"
+            "/Users/jasper/Code/beroeps-product-testen/Stap1/Shop/Shop/Shop.csproj": {
+              "projectPath": "/Users/jasper/Code/beroeps-product-testen/Stap1/Shop/Shop/Shop.csproj"
             }
           }
         }

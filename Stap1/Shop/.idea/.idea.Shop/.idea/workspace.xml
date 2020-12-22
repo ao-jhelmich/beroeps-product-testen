@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="da6ee009-a5a2-4d00-85cb-5a158c813f86" name="Default Changelist" comment="" />
+    <list default="true" id="da6ee009-a5a2-4d00-85cb-5a158c813f86" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Shop/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Shop/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Shop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Shop/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shop.Tests/bin/Debug/netcoreapp3.1/nunit_random_seed.tmp" beforeDir="false" afterPath="$PROJECT_DIR$/Shop.Tests/bin/Debug/netcoreapp3.1/nunit_random_seed.tmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shop.Tests/obj/Debug/netcoreapp3.1/Shop.Tests.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Shop.Tests/obj/Debug/netcoreapp3.1/Shop.Tests.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shop.Tests/obj/Debug/netcoreapp3.1/Shop.Tests.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Shop.Tests/obj/Debug/netcoreapp3.1/Shop.Tests.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shop.Tests/obj/Debug/netcoreapp3.1/Shop.Tests.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Shop.Tests/obj/Debug/netcoreapp3.1/Shop.Tests.csprojAssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shop.Tests/obj/Shop.Tests.csproj.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Shop.Tests/obj/Shop.Tests.csproj.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shop.Tests/obj/Shop.Tests.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Shop.Tests/obj/Shop.Tests.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shop.Tests/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/Shop.Tests/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shop.Tests/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Shop.Tests/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shop/obj/Debug/netcoreapp3.1/Shop.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Shop/obj/Debug/netcoreapp3.1/Shop.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shop/obj/Debug/netcoreapp3.1/Shop.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Shop/obj/Debug/netcoreapp3.1/Shop.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shop/obj/Debug/netcoreapp3.1/Shop.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Shop/obj/Debug/netcoreapp3.1/Shop.csprojAssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shop/obj/Shop.csproj.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Shop/obj/Shop.csproj.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shop/obj/Shop.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Shop/obj/Shop.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shop/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/Shop/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shop/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Shop/obj/project.packagespec.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Shop/DetermineShippingCosts.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Shop.Tests/UnitTest1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/.config/NuGet/NuGet.Config" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Shop.Tests/UnitTest1.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -22,6 +43,7 @@
     </option>
   </component>
   <component name="ProjectId" id="1lWD71LqOM9XO74FC2JmNvAJKpd" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -45,6 +67,7 @@
       <workItem from="1607703786660" duration="1000000" />
       <workItem from="1607704837595" duration="1847000" />
       <workItem from="1607706871207" duration="967000" />
+      <workItem from="1607708457548" duration="704000" />
     </task>
     <servers />
   </component>
@@ -55,7 +78,7 @@
     <option name="coveragePercentColumnWidth" value="150" />
     <option name="sortOrder" value="DESCENDING" />
     <option name="sortedColumn" value="1" />
-    <option name="symbolColumnWidth" value="184" />
+    <option name="symbolColumnWidth" value="239" />
     <coverage-tree-state>
       <expand>
         <path>
@@ -71,14 +94,14 @@
           <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
           <item name="1" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
           <item name="2" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="6" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="7" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
         </path>
         <path>
           <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
           <item name="1" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
           <item name="2" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="6" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="8" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="7" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="9" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
         </path>
       </expand>
       <select />
@@ -99,24 +122,5 @@
       <screen x="0" y="25" width="1792" height="1026" />
     </state>
     <state x="491" y="174" key="SettingsEditor/0.25.1792.1026@0.25.1792.1026" timestamp="1607707884463" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Shop.Tests/UnitTest1.cs</url>
-          <line>59</line>
-          <properties documentPath="$PROJECT_DIR$/Shop.Tests/UnitTest1.cs" initialLine="59">
-            <startOffsets>
-              <option value="1782" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1783" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
