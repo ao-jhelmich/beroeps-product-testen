@@ -1,0 +1,12 @@
+GET http://www.yoursite.io/files/thumbnails/ozv3uuakjg6cozah351b.0x480x0x60.jpg HTTP/1.1
+Host: www.yoursite.io
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:82.0) Gecko/20100101 Firefox/82.0
+Accept: image/webp,*/*
+Accept-Language: nl,en-US;q=0.7,en;q=0.3
+Accept-Encoding: gzip, deflate
+DNT: 1
+Connection: keep-alive
+Referer: http://www.yoursite.io/preview/?wid=32900&pvid=476359&pvkey=d1bfe7a591ca7502415c4a005c2cc815
+Pragma: no-cache
+Cache-Control: no-cache
+

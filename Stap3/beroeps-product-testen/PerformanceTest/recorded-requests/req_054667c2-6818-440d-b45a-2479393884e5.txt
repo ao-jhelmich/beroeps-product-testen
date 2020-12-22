@@ -1,0 +1,11 @@
+GET http://demowebshop.tricentis.com/customer/addresses HTTP/1.1
+Host: demowebshop.tricentis.com
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:82.0) Gecko/20100101 Firefox/82.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Language: nl,en-US;q=0.7,en;q=0.3
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Referer: http://demowebshop.tricentis.com/customer/info
+Cookie: Nop.customer=835fbc6d-f246-42b5-8aeb-33d16d1c75d1; ARRAffinity=7f10010dd6b12d83d6aefe199065b2e8fe0d0850a7df2983b482815225e42439; NOPCOMMERCE.AUTH=AB11662B5148E2212DB9333E7D11CE057266166D740EEA6A6ABC8B29EAD78F28543D2FAA63AA3A450E2271A9452D1381668F234620B99CA14BFE3036B8BD29057A5B9CDAB3E360121B73B442EF6F52D7026FD02968D2DDAC8F6A358C10DF620EA755AF686892F4DDD31173B3FDD70BDC567F558DB798BA55BF5D945EF75DFB0797005F40DD6E025006F7F8CB80EDCB4F; __RequestVerificationToken=diZsh7y1wUJSHMDsx3gUvCNTusWIle5EI8no-QKNEeklK9rRVNQDu6VP-Ehmowd9uQxylXXQoOk6AjCOWgJoBVVl67sQbpfQMFW8Z16MKUY1
+Upgrade-Insecure-Requests: 1
+

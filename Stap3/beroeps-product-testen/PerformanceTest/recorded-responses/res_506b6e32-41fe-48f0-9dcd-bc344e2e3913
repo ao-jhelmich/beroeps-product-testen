@@ -1,0 +1,1369 @@
+const Menu = function(options) {this.init(options);};
+
+Menu.prototype =
+{
+	/**
+	 * Constructor
+	 * @param object options
+	 * @return void
+	 */
+	init: function(options)
+	{
+		this.options = {
+			selector: '.menu'
+		};
+		
+		$.extend(this.options, options);
+		
+		this.window_node = $(window);
+		this.body_node = $('body');
+		this.viewport_node = $('#viewport');
+		this.menu_node = $();
+		this.default_menu_ul_node = $();
+		this.hamburger_menu_handler_node = $();
+		this.hamburger_menu_node = $();
+		this.hamburger_menu_close_node = $();
+		this.hamburger_menu_ul_node = $();
+		this.block_node = $();
+		this.block_container_node = $();
+		
+		this.hamburger_menu_position = {};
+		this.hamburger_menu_margin = {};
+		this.hamburger_menu_max_width = NaN;
+		this.dropdown_menu_position = {};
+		this.dropdown_menu_margin = {};
+		
+		this.start();
+	},
+
+	/**
+	 * Start
+	 * @return void
+	 */
+	start: function()
+	{
+		let _this = this;
+		let selectors = this.options.selector.split(',');
+		
+		if (selectors.length > 1) {
+			for (let x in selectors) {
+				let options = $.extend({}, this.options);
+				
+				options.selector = $.trim(selectors[x]);
+				
+				new Menu(options);
+			}
+		} else {
+			let menu_nodes = $(this.options.selector);
+			
+			menu_nodes.each(function(index) {
+				if (index) {
+					let options = $.extend({}, _this.options);
+					
+					options.selector += ':eq('+index+')';
+					options.init = false;
+					
+					new Menu(options);
+				} else {
+					_this.menu_node = $(this);
+					_this.block_node = _this.menu_node.parents('header, section, footer').first();
+					_this.block_container_node = _this.block_node.children('.container:first');
+					_this.default_menu_ul_node = _this.menu_node.find('.default-menu:first ul:first');
+					_this.hamburger_menu_handler_node = _this.menu_node.find('.hamburger-menu-handler:first');
+					_this.hamburger_menu_node = _this.menu_node.find('.hamburger-menu:first');
+					_this.hamburger_menu_close_node = _this.hamburger_menu_node.find('.hamburger-menu-close:first');
+					_this.hamburger_menu_ul_node = _this.hamburger_menu_node.find('ul:first');
+					
+					_this.hamburger_menu_position = {
+						top: parseInt(_this.hamburger_menu_node.css('top')),
+						bottom: parseInt(_this.hamburger_menu_node.css('bottom')),
+						left: parseInt(_this.hamburger_menu_node.css('left')),
+						right: parseInt(_this.hamburger_menu_node.css('right')),
+					};
+					
+					_this.hamburger_menu_margin = {
+						top: parseInt(_this.hamburger_menu_node.css('margin-top')),
+						bottom: parseInt(_this.hamburger_menu_node.css('margin-bottom')),
+						left: parseInt(_this.hamburger_menu_node.css('margin-left')),
+						right: parseInt(_this.hamburger_menu_node.css('margin-right')),
+					};
+					
+					_this.hamburger_menu_max_width = parseInt(_this.hamburger_menu_node.css('max-width'))
+
+					let dropdown_menu_node = _this.default_menu_ul_node.find('.dropdown-menu:first');
+					
+					_this.dropdown_menu_position = {
+						left: parseInt(dropdown_menu_node.css('left')),
+						right: parseInt(dropdown_menu_node.css('right')),
+					};
+					
+					_this.dropdown_menu_margin = {
+						top: parseInt(dropdown_menu_node.css('margin-top')),
+						bottom: parseInt(dropdown_menu_node.css('margin-bottom')),
+						left: parseInt(dropdown_menu_node.css('margin-left')),
+						right: parseInt(dropdown_menu_node.css('margin-right')),
+					};
+					
+					_this.setEvents();
+					_this.setDefaultMenuEvents();
+					_this.setHamburgerMenuEvents();
+				}
+			});
+		}
+	},
+
+	/**
+	 * Set events
+	 * @return void
+	 */
+	setEvents: function()
+	{
+		// prevent dafault click to show submenu
+		this.menu_node.find('nav li > .dropdown-menu, nav li > ul').on('click', function(event) {
+			event.stopPropagation();
+		});
+		
+		this.menu_node.find('nav li:has(> .dropdown-menu, > ul) > a')
+			.on('mousedown', function() {
+				let a_node = $(this);
+				let submenu_node = a_node.nextAll('.dropdown-menu, ul').first();
+				
+				if (submenu_node.is(':hidden')) {
+					a_node.data('prevent_default', true);
+				}
+			})
+			.on('click', function(event) {
+				let a_node = $(this);
+				
+				if (a_node.data('prevent_default')) {
+					event.preventDefault();
+				} else {
+					event.stopPropagation();
+				}
+				
+				a_node.data('prevent_default', false);
+			})
+			.each(function() {
+				this.addEventListener('touchstart', function() {
+					let a_node = $(this);
+					let submenu_node = a_node.nextAll('.dropdown-menu, ul').first();
+					
+					if (submenu_node.is(':hidden')) {
+						a_node.data('prevent_default', true);
+					}
+				}, {passive: true});
+			});
+	},
+
+	/**
+	 * Set default menu events
+	 * @return void
+	 */
+	setDefaultMenuEvents: function()
+	{
+		let _this = this;
+		
+		this.window_node.on('resize', function() {
+			_this.default_menu_ul_node.find('li.enter:not(.leave)').each(function() {
+				_this.setSubmenuPosition($(this));
+			});
+		});
+		
+		// toggle submenu on item enter
+		this.default_menu_ul_node.find('li:has(> .dropdown-menu, > ul)').on({
+			mouseenter: function() {
+				let li_node = $(this);
+				
+				if (li_node.children('.dropdown-menu, ul').first().css('position') == 'fixed') {
+					li_node.addClass('enter leave').height();
+					
+					_this.setSubmenuPosition(li_node);
+					
+					li_node.removeClass('leave');
+				}
+			},
+			mouseleave: function() {
+				let li_node = $(this);
+				
+				if (li_node.hasClass('enter')) {
+					li_node.addClass('leave');
+				}
+			},
+		});
+		
+		// remove classes/style on transition end
+		this.default_menu_ul_node.find('li > .dropdown-menu, li > ul').on('transitionend', function() {
+			let submenu_node = $(this);
+			
+			submenu_node
+				.parent('li.leave')
+				.removeClass('enter leave');
+				
+			submenu_node
+				.find('li.leave')
+				.removeClass('enter leave');
+				
+			if (submenu_node.hasClass('shift')) {
+				let submenu_ul_node = submenu_node.is('ul')
+					? submenu_node
+					: submenu_node.children('ul:first');
+					
+				submenu_node.removeClass('shift');
+				submenu_ul_node.css({
+					height: '',
+					width: '',
+				});
+			}
+		});
+	},
+
+	/**
+	 * Set submenu position
+	 * @param object li_node
+	 * @return void
+	 */
+	setSubmenuPosition: function(li_node)
+	{
+		let submenu_node = li_node.children('.dropdown-menu, ul').first();
+		
+		if (submenu_node.css('position') == 'fixed') {
+			submenu_node
+				.removeClass('shift')
+				.removeAttr('style');
+				
+			submenu_node
+				.children('ul')
+				.removeAttr('style');
+				
+			let is_dropdown = submenu_node.is('.dropdown-menu');
+			let dropdown_menu_node = $();
+			
+			if (is_dropdown) {
+				this.setDropdownMenuPosition(li_node, submenu_node);
+			} else {
+				dropdown_menu_node = li_node.parents('.dropdown-menu:first');
+				
+				submenu_node.css({
+					left: dropdown_menu_node.offset().left + dropdown_menu_node.outerWidth(),
+					top: li_node.offset().top,
+				});
+			}
+			
+			let viewport_right = this.viewport_node.offset().left + this.viewport_node.width();
+			let submenu_width = submenu_node.outerWidth(true);
+			let submenu_left = submenu_node.offset().left;
+			let submenu_right = submenu_left + submenu_width;
+			
+			// correct overflow
+			if (submenu_right > viewport_right) {
+				if (is_dropdown) {
+					submenu_node.css('left', submenu_left - (submenu_right - viewport_right));
+				} else {
+					submenu_width = submenu_node.outerWidth() + (parseInt(submenu_node.css('margin-left')) * 2);
+					
+					submenu_node.css('left', dropdown_menu_node.offset().left - submenu_width);
+				}
+			}
+			
+			this.setSubmenuSpacers(li_node, submenu_node);
+			this.shiftSubmenu(li_node, submenu_node);
+		}
+	},
+
+	/**
+	 * Set submenu spacers
+	 * @param object li_node
+	 * @param object submenu_node
+	 * @return void
+	 */
+	setSubmenuSpacers: function(li_node, submenu_node)
+	{
+		let prev_li_node = li_node.prev('li');
+		let li_spacer_node = li_node.children('.spacer:first');
+		let submenu_spacer_node = submenu_node.children('.spacer:first');
+		let li_spacer_position = {};
+		let submenu_spacer_position = {};
+		
+		let prev_li_margin_right = 0;
+		let prev_li_margin_bottom = 0;
+		let li_margin_right = parseInt(li_node.css('margin-right'));
+		let li_margin_bottom = parseInt(li_node.css('margin-bottom'));
+		
+		if (prev_li_node.length) {
+			prev_li_margin_right = parseInt(prev_li_node.css('margin-right'));
+			prev_li_margin_bottom = parseInt(prev_li_node.css('margin-bottom'));
+		}
+		
+		if (submenu_node.is('.dropdown-menu')) {
+			let li_bottom = li_node.offset().top + li_node.outerHeight();
+			
+			submenu_spacer_position.top = li_bottom - submenu_node.offset().top;
+		} else {
+			let li_left = li_node.offset().left;
+			let submenu_right = submenu_node.offset().left + submenu_node.outerWidth();
+			
+			submenu_spacer_position.top = -parseInt(submenu_node.css('margin-top'));
+			
+			if (submenu_right < li_left) {
+				submenu_spacer_position.left = '100%';
+				submenu_spacer_position.right = -parseInt(submenu_node.css('margin-right'));
+			} else {
+				submenu_spacer_position.left = -parseInt(submenu_node.css('margin-left'));
+			}
+		}
+		
+		li_spacer_node.removeAttr('style');
+		submenu_spacer_node.removeAttr('style');
+		
+		if (prev_li_margin_right) {
+			li_spacer_position.left = -prev_li_margin_right;
+		}
+		
+		if (li_margin_right) {
+			li_spacer_position.right = -li_margin_right;
+		}
+		
+		if (prev_li_margin_bottom) {
+			li_spacer_position.top = -prev_li_margin_bottom;
+		}
+		
+		if (li_margin_bottom) {
+			li_spacer_position.bottom = -li_margin_bottom;
+		}
+		
+		if (li_spacer_position) {
+			if (!li_spacer_node.length) {
+				li_spacer_node = $('<div>', {class: 'spacer'});
+				
+				li_node.prepend(li_spacer_node);
+			}
+			
+			li_spacer_node.css(li_spacer_position);
+		}
+		
+		if (submenu_spacer_position) {
+			if (!submenu_spacer_node.length) {
+				submenu_spacer_node = $('<div>', {class: 'spacer'});
+				
+				submenu_node.prepend(submenu_spacer_node);
+			}
+			
+			submenu_spacer_node.css(submenu_spacer_position);
+		}
+	},
+
+	/**
+	 * Set dropdown menu position
+	 * @params object li_menu_node
+	 * @params object dropdown_menu_node
+	 * @return void
+	 */
+	setDropdownMenuPosition: function(li_node, dropdown_menu_node)
+	{
+		if (dropdown_menu_node.data('align_vertical') == 'block_bottom') {
+			let block_bottom = this.block_node.offset().top + this.block_node.outerHeight();
+			
+			dropdown_menu_node.css('top', block_bottom);
+		} else {
+			dropdown_menu_node.css('top', this.menu_node.offset().top + this.menu_node.outerHeight());
+		}
+		
+		if (!isNaN(this.dropdown_menu_position.left) || !isNaN(this.dropdown_menu_position.right)) {
+			let viewport_left = this.viewport_node.offset().left;
+			
+			if (!isNaN(this.dropdown_menu_position.left) && viewport_left) {
+				dropdown_menu_node.css('left', this.dropdown_menu_position.left + viewport_left);
+			}
+			
+			if (!isNaN(this.dropdown_menu_position.right)) {
+				let body_width = this.body_node.width();
+				let viewport_right = viewport_left + this.viewport_node.width();
+				
+				if (viewport_right < body_width) {
+					dropdown_menu_node.css('right', this.dropdown_menu_position.right + (body_width - viewport_right));
+				}
+			}
+		} else {
+			let li_left = Math.round(li_node.offset().left);
+			let dropdown_menu_width;
+			
+			switch (dropdown_menu_node.data('align_horizontal')) {
+				case 'center':
+					let li_width = li_node.outerWidth();
+					dropdown_menu_width = dropdown_menu_node.outerWidth();
+					
+					dropdown_menu_node.css('left', li_left + Math.round((li_width - dropdown_menu_width) / 2));
+					break;
+				case 'right':
+					let li_right = li_left + li_node.outerWidth();
+					dropdown_menu_width = dropdown_menu_node.outerWidth();
+					
+					dropdown_menu_node.css('left', li_right - dropdown_menu_width);
+					break;
+				default:
+					dropdown_menu_node.css('left', li_left);
+			}
+		}
+	},
+
+	/**
+	 * Shift submenu
+	 * @params object li_node
+	 * @params object submenu_node
+	 * @return void
+	 */
+	shiftSubmenu: function(li_node, submenu_node)
+	{
+		let dropdown_menu_node = submenu_node.is('.dropdown-menu')
+			? submenu_node
+			: submenu_node.parents('.dropdown-menu:first');
+			
+		if (dropdown_menu_node.data('switch_effect') == 'shift') {
+			let sibling_li_node = li_node.siblings('.leave:first');
+			let sibling_submenu_node = sibling_li_node.children('.dropdown-menu, ul').first();
+			let sibling_submenu_ul_node = sibling_submenu_node.is('ul')
+				? sibling_submenu_node
+				: sibling_submenu_node.children('ul:first');
+				
+			if (sibling_submenu_ul_node.length) {
+				let sibling_submenu_offset = sibling_submenu_node.offset();
+				sibling_submenu_offset.top -= parseInt(sibling_submenu_node.css('margin-top'));
+				sibling_submenu_offset.left -= parseInt(sibling_submenu_node.css('margin-left'));
+				
+				let submenu_offset = submenu_node.offset();
+				submenu_offset.top -= parseInt(submenu_node.css('margin-top'));
+				submenu_offset.left -= parseInt(submenu_node.css('margin-left'));
+				
+				let submenu_ul_node = submenu_node.is('ul')
+					? submenu_node
+					: submenu_node.children('ul:first');
+					
+				let submenu_ul_height = submenu_ul_node.outerHeight();
+				let submenu_ul_width = submenu_ul_node.outerWidth();
+				
+				submenu_node
+					.css({
+						left: sibling_submenu_offset.left,
+						top: sibling_submenu_offset.top,
+					})
+					.height();
+					
+				submenu_ul_node
+					.css({
+						height: sibling_submenu_ul_node.outerHeight(),
+						width: sibling_submenu_ul_node.outerWidth(),
+					})
+					.height();
+					
+				submenu_ul_node
+					.children()
+					.css('opacity', 0)
+					.height();
+					
+				submenu_node
+					.addClass('shift')
+					.css({
+						left: submenu_offset.left,
+						top: submenu_offset.top,
+					});
+					
+				submenu_ul_node
+					.css({
+						height: submenu_ul_height,
+						width: submenu_ul_width,
+					})
+					.children()
+					.css('opacity', '');
+					
+				sibling_li_node.removeClass('enter leave');
+				
+				sibling_submenu_node
+					.removeClass('shift')
+					.find('li')
+					.removeClass('enter leave');
+			}
+		}
+	},
+
+	/**
+	 * Set hamburger menu events
+	 * @return void
+	 */
+	setHamburgerMenuEvents: function()
+	{
+		let _this = this;
+		
+		this.window_node.on('resize', function() {
+			if (_this.hamburger_menu_node.hasClass('active')) {
+				if (_this.hamburger_menu_node.is(':hidden')) {
+					_this.closeHamburgerMenu();
+				} else {
+					_this.setHamburgerMenuPosition();
+				}
+			}
+		});
+		
+		// toggle hamburger menu on handler click
+		this.hamburger_menu_handler_node.on('click', function() {
+			if (_this.hamburger_menu_handler_node.hasClass('active')) {
+				_this.closeHamburgerMenu();
+			} else {
+				_this.viewport_node
+					.find('.hamburger-menu-handler.active')
+					.trigger('click');
+					
+				_this.openHamburgerMenu();
+			}
+		});
+		
+		// close hamburger menu on close click
+		this.hamburger_menu_close_node.on('click', function() {
+			_this.closeHamburgerMenu();
+		});
+		
+		// close hamburger menu on anchor click
+		this.hamburger_menu_node.find('a[href^="#"]:not([href="#"])').on('click', function() {
+			_this.closeHamburgerMenu();
+		});
+		
+		// remove active class on transition end
+		this.hamburger_menu_node.on('transitionend', function() {
+			if (_this.hamburger_menu_node.hasClass('passive')) {
+				_this.hamburger_menu_node.removeClass('active passive');
+			}
+		});
+		
+		// toggle submenu on item click
+		this.hamburger_menu_ul_node.find('li:has(> ul)').on('click', function() {
+			let li_node = $(this);
+			let ul_node = li_node.children('ul:first');
+			
+			if (li_node.hasClass('expand')) {
+				ul_node.css('height', ul_node.outerHeight()).height();
+				li_node.addClass('collapse');
+			} else {
+				ul_node.addClass('measure noheight');
+				ul_node.css('height', ul_node.outerHeight());
+				ul_node.removeClass('measure noheight');
+				
+				li_node.siblings('.expand').trigger('click');
+				li_node.addClass('expand collapse').height();
+				li_node.removeClass('collapse');
+			}
+		});
+		
+		// remove expand class on transition end
+		this.hamburger_menu_ul_node.find('li > ul').on('transitionend', function() {
+			let ul_node = $(this);
+			let li_node = $(this).parent('li');
+			
+			if (li_node.hasClass('collapse')) {
+				li_node.removeClass('expand collapse');
+			} else {
+				ul_node.css('height', '');
+			}
+		});
+	},
+
+	/**
+	 * Open hamburger menu
+	 * @return void
+	 */
+	openHamburgerMenu: function()
+	{
+		this.setHamburgerMenuPosition();
+		
+		this.hamburger_menu_ul_node.find('li:not(.active).expand').removeClass('expand');
+		
+		this.hamburger_menu_handler_node.addClass('active');
+		this.hamburger_menu_node.addClass('active passive').height();
+		this.hamburger_menu_node.removeClass('passive');
+		this.viewport_node.css('overflow', 'hidden');
+	},
+
+	/**
+	 * Close hamburger menu
+	 * @return void
+	 */
+	closeHamburgerMenu: function()
+	{
+		this.hamburger_menu_handler_node.removeClass('active');
+		this.viewport_node.css('overflow', '');
+		
+		if (this.hamburger_menu_node.is(':visible')) {
+			this.hamburger_menu_node.addClass('passive');
+		} else {
+			this.hamburger_menu_node.removeClass('active');
+		}
+	},
+
+	/**
+	 * Set hamburger menu position
+	 * @return void
+	 */
+	setHamburgerMenuPosition: function()
+	{
+		this.hamburger_menu_node.removeAttr('style');
+		this.hamburger_menu_close_node.removeAttr('style');
+		
+		let body_width = this.body_node.width();
+		
+		let viewport_offset = this.viewport_node.offset();
+		let viewport_width = this.viewport_node.width();
+		let viewport_right = viewport_offset.left + viewport_width;
+		
+		let handler_offset = this.hamburger_menu_handler_node.offset();
+		let handler_right = handler_offset.left + this.hamburger_menu_handler_node.outerWidth();
+		let handler_align = (handler_offset.left - viewport_offset.left) < (viewport_right - handler_right) ? 'left' : 'right';
+		
+		let hamburger_menu_max_width = this.hamburger_menu_max_width + this.hamburger_menu_margin.left + this.hamburger_menu_margin.right;
+		let hamburger_menu_align = null;
+		let hamburger_menu_top = 0;
+		
+		// unset left/right based on handler position
+		if (!isNaN(this.hamburger_menu_max_width) && hamburger_menu_max_width < viewport_width) {
+			hamburger_menu_align = handler_align
+
+			if (hamburger_menu_align == 'left') {
+				this.hamburger_menu_node.css('right', 'auto');
+			} else {
+				this.hamburger_menu_node.css('left', 'auto');
+			}
+			
+			this.hamburger_menu_node.css('width', '100%');
+		}
+		
+		// set top
+		if (!isNaN(this.hamburger_menu_position.top)) {
+			hamburger_menu_top = isNaN(this.hamburger_menu_position.bottom)
+				? this.block_node.offset().top
+				: this.hamburger_menu_position.top + viewport_offset.top;
+				
+			this.hamburger_menu_node.css('top', hamburger_menu_top);
+			
+			// set close position
+			this.hamburger_menu_close_node.css('top', hamburger_menu_top);
+			
+			if (hamburger_menu_align && isNaN(this.hamburger_menu_position.bottom)) {
+				let container_offset = this.block_container_node.offset();
+				
+				if (hamburger_menu_align == 'left') {
+					this.hamburger_menu_close_node.css('left', container_offset.left);
+				} else {
+					let container_right = container_offset.left + this.block_container_node.outerWidth();
+					
+					this.hamburger_menu_close_node.css('right', body_width - container_right);
+				}
+			} else {
+				if (handler_align == 'left') {
+					this.hamburger_menu_close_node.css('left', viewport_offset.left);
+				} else {
+					this.hamburger_menu_close_node.css('right', body_width - viewport_right);
+				}
+			}
+		} else {
+			hamburger_menu_top = this.block_node.offset().top + this.block_node.outerHeight();
+			
+			this.hamburger_menu_node.css('top', hamburger_menu_top);
+		}
+		
+		// set bottom
+		if (!isNaN(this.hamburger_menu_position.bottom)) {
+			// let body_height = this.body_node.height();
+			// let viewport_bottom = viewport_offset.top + this.viewport_node.height();
+			
+			// if (viewport_bottom < body_height) {
+			//	 this.hamburger_menu_node.css(
+			//		 'bottom',
+			//		 this.hamburger_menu_position.bottom + (body_height - viewport_bottom)
+			//	 );
+			// }
+		}
+		// set max height
+		else {
+			let viewport_height = this.viewport_node.height();
+			
+			this.hamburger_menu_node.css(
+				'max-height',
+				viewport_height + viewport_offset.top - hamburger_menu_top - this.hamburger_menu_margin.top - this.hamburger_menu_margin.bottom
+			);
+		}
+		
+		// set left
+		if (!isNaN(this.hamburger_menu_position.left) && hamburger_menu_align != 'right') {
+			let hamburger_menu_left = hamburger_menu_align == 'left' && isNaN(this.hamburger_menu_position.bottom)
+				? this.block_container_node.offset().left
+				: viewport_offset.left;
+				
+			if (hamburger_menu_left) {
+				this.hamburger_menu_node.css('left', this.hamburger_menu_position.left + hamburger_menu_left);
+			}
+		}
+		
+		// set right
+		if (!isNaN(this.hamburger_menu_position.right) && hamburger_menu_align != 'left') {
+			let hamburger_menu_right = hamburger_menu_align == 'right' && isNaN(this.hamburger_menu_position.bottom)
+				? this.block_container_node.offset().left + this.block_container_node.outerWidth()
+				: viewport_right;
+				
+			if (hamburger_menu_right != body_width) {
+				this.hamburger_menu_node.css(
+					'right',
+					this.hamburger_menu_position.right + (body_width - hamburger_menu_right)
+				);
+			}
+		}
+	}
+};var Sticky = function(options) {this.init(options);};
+
+Sticky.prototype =
+{
+	/**
+	 * Constructor
+	 * @param object options
+	 * @return void
+	 */
+	init: function(options)
+	{
+		this.options = {
+			selector: '[data-sticky]'
+		};
+		
+		$.extend(this.options, options);
+		
+		this.window = $(window);
+		this.sticky_node = $('#sticky');
+		this.sticky_page_node = $();
+		this.viewport_node = $('#viewport');
+		this.page_node = $();
+		this.sticky_nodes = $();
+		this.ghost_nodes = $();
+		
+		this.page_top = 0;
+		this.scrollbar_width = 0;
+		this.sticky_heights = [];
+		this.sticky_tops = [];
+		
+		this.screen_widths = {
+			xs: [0, 479],
+			sm: [480, 767],
+			md: [768, 1023],
+			lg: [1024, 1279]
+		};
+		
+		this.start();
+	},
+
+	/**
+	 * Start
+	 * @return void
+	 */
+	start: function()
+	{
+		this.sticky_nodes = $(this.options.selector);
+		
+		if (this.sticky_nodes.length) {
+			if (!this.sticky_node.length) {
+				this.sticky_node = $('<div>', {id: 'sticky'});
+				
+				this.viewport_node.before(this.sticky_node);
+			}
+			
+			this.page_node = this.sticky_nodes.first().parents('.page:first');
+			this.page_top = parseInt(this.page_node.css('top'));
+			this.sticky_page_node = $('<div>', {class: this.page_node.attr('class'), 'data-page_id': this.page_node.attr('id')});
+			
+			if (this.page_top) {
+				this.sticky_page_node.css('top', this.page_top);
+			}
+			
+			this.sticky_node.append(this.sticky_page_node);
+			
+			if (this.page_node.is(':visible')) {
+				this.setStickyData();
+				this.setSticky(true);
+				this.setScrollSize();
+				this.setStickySize();
+				this.setEvents();
+			}
+		}
+	},
+
+	/**
+	 * Set events
+	 * @return void
+	 */
+	setEvents: function()
+	{
+		var _this = this;
+		
+		this.window.on('resize', function() {
+			if (_this.page_node.is(':visible')) {
+				_this.setStickyData();
+				_this.setSticky(true);
+				_this.setScrollSize();
+				_this.setStickySize();
+			}
+		});
+		
+		this.viewport_node.on('scroll', function() {
+			if (!_this.viewport_node.data('ignore_event')) {
+				_this.setSticky();
+				_this.setStickySize();
+			}
+		});
+	},
+
+	/**
+	 * Set sticky data
+	 * @return void
+	 */
+	setStickyData: function()
+	{
+		var _this = this;
+		
+		this.sticky_heights = [];
+		this.sticky_tops = [];
+		
+		this.sticky_nodes.filter(':visible').each(function(index) {
+			var sticky_node = $(this);
+			var is_sticky = sticky_node.parents('#sticky').length;
+			
+			if (is_sticky) {
+				_this.ghost_nodes.eq(index).css('height', '').before(sticky_node);
+			}
+			
+			var sticky_height = sticky_node.outerHeight(true);
+			var sticky_top = sticky_node.position().top;
+			
+			_this.sticky_heights.push(sticky_height);
+			_this.sticky_tops.push(sticky_top);
+		});
+	},
+
+	/**
+	 * Set sticky
+	 * @param boolean init
+	 * @return void
+	 */
+	setSticky: function(init)
+	{
+		var _this = this;
+		var viewport_width = this.viewport_node.width();
+		var scroll_top = this.viewport_node.scrollTop();
+		var sticky_nodes = this.sticky_nodes.filter(':visible');
+		var screen_size = 'xl';
+		
+		for (var _screen_size in this.screen_widths) {
+			var min_width = this.screen_widths[_screen_size][0];
+			var max_width = this.screen_widths[_screen_size][1];
+			
+			if (viewport_width >= min_width && viewport_width <= max_width) {
+				screen_size = _screen_size;
+			}
+		}
+		
+		sticky_nodes.each(function(index) {
+			var sticky_node = $(this);
+			var screen_sizes = sticky_node.data('sticky').split('|');
+			
+			if (
+				screen_sizes.indexOf('sticky') !== -1 ||
+				screen_sizes.indexOf(screen_size) !== -1
+			) {
+				var sticky_top = _this.sticky_tops[index];
+				var prev_sticky_nodes = sticky_nodes.filter(':lt('+index+')');
+				var prev_sticky_heights = 0;
+				
+				prev_sticky_nodes.each(function() {
+					prev_sticky_heights += $(this).outerHeight();
+				});
+				
+				if (init || sticky_top !== prev_sticky_heights) {
+					var is_sticky = sticky_node.parents('#sticky').length;
+					var ghost_node = _this.ghost_nodes.eq(index);
+					
+					sticky_top -= prev_sticky_heights;
+					
+					if (_this.page_top) {
+						sticky_top -= _this.page_top;
+					}
+					
+					if (!is_sticky && sticky_top <= scroll_top) {
+						var sticky_height = _this.sticky_heights[index];
+						
+						if (!ghost_node.length) {
+							ghost_node = $('<div>', {class: 'ghost'});
+							
+							sticky_node.after(ghost_node);
+							
+							_this.ghost_nodes = _this.ghost_nodes.add(ghost_node);
+						}
+						
+						_this.sticky_page_node.append(sticky_node);
+						
+						ghost_node.css('height', sticky_height);
+					} else if (is_sticky && sticky_top > scroll_top) {
+						ghost_node.css('height', '').before(sticky_node);
+					}
+				}
+			} else {
+				var is_sticky = sticky_node.parents('#sticky').length;
+				
+				if (is_sticky) {
+					var ghost_node = _this.ghost_nodes.eq(index);
+					
+					ghost_node.css('height', '').before(sticky_node);
+				}
+			}
+		});
+	},
+
+	/**
+	 * Set scroll size
+	 * @return void
+	 */
+	setScrollSize: function()
+	{
+		this.viewport_node.css('overflow', 'hidden');
+		
+		var viewport_width = this.viewport_node.outerWidth();
+		
+		this.viewport_node.css('overflow', '');
+		
+		this.scrollbar_width = viewport_width - this.page_node.outerWidth();
+	},
+
+	/**
+	 * Set sticky size
+	 * @return void
+	 */
+	setStickySize: function()
+	{
+		var right = this.scrollbar_width ? this.scrollbar_width : '';
+		
+		this.sticky_node.css('right', right);
+	}
+};const Anchor = function(options) {this.init(options);};
+
+Anchor.prototype =
+{
+	/**
+	 * Constructor
+	 * @param object options
+	 * @return void
+	 */
+	init: function(options)
+	{
+		this.options = {
+			selector: 'a[name]'
+		};
+		
+		$.extend(this.options, options);
+		
+		this.viewport_node = $('#viewport');
+		this.anchor_nodes = $();
+		this.anchor_nodes_reverse = $();
+		this.li_nodes = $();
+		this.hash = '#';
+		this.hold = false;
+		
+		this.start();
+	},
+
+	/**
+	 * Start
+	 * @return void
+	 */
+	start: function()
+	{
+		this.hash = location.hash;
+		
+		let _this = this;
+		let anchor_names = [];
+		
+		$(this.options.selector).each(function() {
+			let anchor_node = $(this);
+			
+			if (anchor_node.is(':visible')) {
+				let anchor_name = anchor_node.attr('name');
+				
+				if (anchor_names.indexOf(anchor_name) == -1) {
+					let anchor_hash = '#'+anchor_name;
+					let link_selector = _this.options.selector.replace(/a\[name]/g, 'a[href="'+anchor_hash+'"]');
+					
+					this.link_nodes = $(link_selector);
+					this.li_nodes = this.link_nodes.parents('li:first');
+					this.sticky_nodes = anchor_node.parent().prevAll('[data-sticky], .ghost');
+					
+					if (anchor_hash == _this.hash) {
+						_this.scrollToAnchor(anchor_node);
+						_this.activateAnchor(anchor_node);
+					}
+					
+					_this.anchor_nodes = _this.anchor_nodes.add(this);
+					_this.li_nodes = _this.li_nodes.add(this.li_nodes);
+					
+					anchor_names.push(anchor_name);
+				}
+			}
+		});
+		
+		this.anchor_nodes_reverse = $(this.anchor_nodes.get().reverse());
+		
+		this.setEvents();
+	},
+
+	/**
+	 * Set events
+	 * @return void
+	 */
+	setEvents: function()
+	{
+		let _this = this;
+		
+		this.anchor_nodes.each(function() {
+			let anchor_node = $(this);
+			
+			this.link_nodes.on('click', function(event) {
+				event.preventDefault();
+				
+				_this.scrollToAnchor(anchor_node, 500);
+				_this.activateAnchor(anchor_node);
+			});
+		});
+		
+		if (this.li_nodes.length) {
+			setTimeout(function() {
+				_this.viewport_node.on('scroll', function() {
+					if (!_this.hold) {
+						let anchor_node = _this.getVisibleAnchor();
+						
+						_this.activateAnchor(anchor_node);
+					}
+				});
+			}, 100);
+		}
+	},
+
+	/**
+	 * Get visible anchor
+	 * @return object
+	 */
+	getVisibleAnchor: function()
+	{
+		let anchor_node = $();
+		
+		this.anchor_nodes_reverse.each(function() {
+			let anchor_top = $(this).offset().top;
+			
+			this.sticky_nodes.each(function() {
+				anchor_top -= $(this).outerHeight(true);
+			});
+			
+			if (anchor_top <= 0) {
+				anchor_node = $(this);
+				
+				return false;
+			}
+		});
+		
+		return anchor_node;
+	},
+
+	/**
+	 * Scroll to anchor
+	 * @param object anchor_node
+	 * @param boolean duration
+	 * @return void
+	 */
+	scrollToAnchor: function(anchor_node, duration)
+	{
+		let _this = this;
+		let anchor_top = anchor_node.offset().top + this.viewport_node.scrollTop();
+		
+		anchor_node.prop('sticky_nodes').each(function() {
+			anchor_top -= $(this).outerHeight(true);
+		});
+		
+		anchor_top = Math.ceil(anchor_top);
+		
+		if (duration) {
+			this.hold = true;
+			
+			this.viewport_node.animate({scrollTop: anchor_top}, duration, function() {
+				_this.hold = false;
+			});
+		} else {
+			this.viewport_node.scrollTop(anchor_top);
+		}
+	},
+
+	/**
+	 * Activate anchor
+	 * @param object anchor_node
+	 * @return void
+	 */
+	activateAnchor: function(anchor_node)
+	{
+		let anchor_name = anchor_node.attr('name') || '';
+		let hash = '#'+anchor_name;
+		let li_nodes = anchor_node.prop('li_nodes');
+		
+		if (hash != this.hash) {
+			this.hash = hash;
+			
+			history.replaceState(null, null, hash);
+		}
+		
+		if (li_nodes && li_nodes.length) {
+			li_nodes.siblings('.active').removeClass('active');
+			li_nodes.addClass('active');
+		} else {
+			this.li_nodes.removeClass('active');
+		}
+	}
+};var Dropdown = function(options) {this.init(options);};
+
+Dropdown.prototype =
+{
+	/**
+	 * Constructor
+	 * @param object options
+	 * @return void
+	 */
+	init: function(options)
+	{
+		this.options = {
+			selector: '.dropdown',
+			bottom: false
+		};
+		
+		$.extend(this.options, options);
+		
+		this.window = $(window);
+		this.dropdown_node = $();
+		
+		this.start();
+	},
+
+	/**
+	 * Start
+	 * @return void
+	 */
+	start: function()
+	{
+		var _this = this;
+		var selectors = this.options.selector.split(',');
+		
+		if (selectors.length > 1) {
+			for (var x in selectors) {
+				var options = $.extend({}, this.options);
+				
+				options.selector = $.trim(selectors[x]);
+				
+				new Dropdown(options);
+			}
+		} else {
+			var dropdown_nodes = $(this.options.selector);
+			
+			dropdown_nodes.each(function(index) {
+				if (index) {
+					var options = $.extend({}, _this.options);
+					
+					options.selector += ':eq('+index+')';
+					
+					new Dropdown(options);
+				} else {
+					_this.dropdown_node = $(this);
+					
+					_this.setListHeight();
+					
+					if (_this.options.bottom) {
+						_this.setListPosition();
+					}
+					
+					_this.setEvents();
+				}
+			});
+		}
+	},
+
+	/**
+	 * Set list height
+	 * @return void
+	 */
+	setListHeight: function()
+	{
+		var list_node = this.dropdown_node.children('options, ul').first();
+		var active_item_node = list_node.children('.active:first');
+		var active_item_text = active_item_node.text();
+		
+		if (!active_item_text) {
+			active_item_text = active_item_node.find('img:first').clone();
+		}
+		
+		this.dropdown_node.prepend(active_item_text);
+		list_node.addClass('measure noheight');
+		
+		var list_height = list_node.outerHeight();
+		
+		list_node.removeClass('measure noheight').css('height', list_height);
+	},
+
+	/**
+	 * Set list position
+	 * @return void
+	 */
+	setListPosition: function()
+	{
+		var col_node = this.dropdown_node.parents('.col:first');
+		var col_bottom = col_node.offset().top + col_node.outerHeight();
+		var list_node = this.dropdown_node.children('options, ul').first();
+		var dropdown_top = this.dropdown_node.offset().top;
+		var list_top = col_bottom - dropdown_top;
+		var spacer_height = list_top - this.dropdown_node.outerHeight();
+		var spacer_node = this.dropdown_node.children('.spacer:first');
+		
+		if (!spacer_node.length) {
+			spacer_node = $('<div>', {class: 'spacer'});
+			
+			list_node.before(spacer_node);
+		}
+		
+		spacer_node.css('height', spacer_height);
+		list_node.css('top', list_top);
+	},
+
+	/**
+	 * Set events
+	 * @return void
+	 */
+	setEvents: function()
+	{
+		var _this = this;
+		
+		if (this.options.bottom) {
+			this.window.on('resize', function() {
+				_this.setListPosition();
+			});
+		}
+		
+		if (this.dropdown_node.length) {
+			this.dropdown_node.get(0).addEventListener('touchstart', function() {}, {passive: true});
+		}
+	}
+};var Scale = function(options) {this.init(options);};
+
+Scale.prototype =
+{
+	/**
+	 * Constructor
+	 * @param object options
+	 * @return void
+	 */
+	init: function(options)
+	{
+		this.options = {
+			selector: '[class*="heading-"], [class*="text-"]',
+			min_font_size: 8
+		};
+		
+		$.extend(this.options, options);
+		
+		this.window = $(window);
+		this.scale_nodes = $();
+		
+		this.start();
+	},
+
+	/**
+	 * Start
+	 * @return void
+	 */
+	start: function()
+	{
+		this.scale_nodes = $(this.options.selector).not(':has([style*="font-size"])');
+		
+		this.setEvents();
+		this.scale();
+	},
+
+	/**
+	 * Set events
+	 * @return void
+	 */
+	setEvents: function()
+	{
+		var _this = this;
+		
+		this.window.on('resize', function() {
+			_this.scale();
+		});
+	},
+
+	/**
+	 * Scale
+	 * @param object scale_node
+	 * @param integer font_size
+	 * @return void
+	 */
+	scale: function(scale_nodes, font_size)
+	{
+		var _this = this;
+		
+		if (!scale_nodes) {
+			scale_nodes = this.scale_nodes;
+		}
+		
+		scale_nodes.each(function() {
+			var scale_node = $(this);
+			var parent_node = scale_node.parent(':visible');
+			var parent_width = Math.ceil(parent_node.width());
+			
+			scale_node.css('font-size', '').wrapInner('<span>');
+			parent_node.css('max-width', '100%');
+			
+			var span_node = scale_node.children('span:first');
+			var _parent_width = Math.ceil(parent_node.width());
+			
+			if (_parent_width < parent_width) {
+				parent_width = _parent_width;
+				
+				var span_width = Math.floor(span_node.outerWidth());
+				
+				parent_node.css('max-width', '');
+			} else {
+				parent_node.css('max-width', '');
+				
+				var span_width = Math.floor(span_node.outerWidth());
+			}
+			
+			span_node.contents().unwrap();
+			
+			if (span_width > parent_width) {
+				var _font_size = font_size ? font_size : parseInt(scale_node.css('font-size'));
+				var reduction = Math.round(_font_size / 10);
+				
+				if (reduction < 1) {
+					reduction = 1;
+				}
+				
+				_font_size -= reduction;
+				
+				if (_font_size >= _this.options.min_font_size) {
+					scale_node.css('font-size', _font_size).wrapInner('<span>');
+					
+					span_node = scale_node.children('span:first');
+					span_width = Math.floor(span_node.outerWidth());
+					
+					span_node.contents().unwrap();
+					
+					if (_font_size > _this.options.min_font_size && span_width > parent_width) {
+						_this.scale(scale_node, _font_size);
+					}
+				}
+			}
+		});
+	}
+};
