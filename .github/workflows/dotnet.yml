@@ -4,21 +4,24 @@ on: [push]
 
 jobs:
   build:
-
+  
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        dotnet-version: '2.2.103'
 
     steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101  
+    
     - name: Install dependencies
-      working-directory: ./Shop
+      working-directory: ./Shop/Shop.Tests
       run: dotnet restore
 
     - name: Build
       run: dotnet build --configuration Release --no-restore
-      working-directory: ./Shop
+      working-directory: ./Shop/Shop.Tests
 
     - name: Test
       run: dotnet test --no-restore --verbosity normal
-      working-directory: ./Shop
+      working-directory: ./Shop/Shop.Tests
