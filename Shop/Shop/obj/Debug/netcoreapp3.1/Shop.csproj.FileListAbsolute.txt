@@ -14,3 +14,11 @@
 /Users/jasper/Code/beroeps-product-testen/Stap1/Shop/Shop/obj/Debug/netcoreapp3.1/Shop.AssemblyInfo.cs
 /Users/jasper/Code/beroeps-product-testen/Stap1/Shop/Shop/obj/Debug/netcoreapp3.1/Shop.dll
 /Users/jasper/Code/beroeps-product-testen/Stap1/Shop/Shop/obj/Debug/netcoreapp3.1/Shop.pdb
+/Users/jasper/Code/beroeps-product-testen/Shop/Shop/bin/Debug/netcoreapp3.1/Shop.deps.json
+/Users/jasper/Code/beroeps-product-testen/Shop/Shop/bin/Debug/netcoreapp3.1/Shop.dll
+/Users/jasper/Code/beroeps-product-testen/Shop/Shop/bin/Debug/netcoreapp3.1/Shop.pdb
+/Users/jasper/Code/beroeps-product-testen/Shop/Shop/obj/Debug/netcoreapp3.1/Shop.csprojAssemblyReference.cache
+/Users/jasper/Code/beroeps-product-testen/Shop/Shop/obj/Debug/netcoreapp3.1/Shop.AssemblyInfoInputs.cache
+/Users/jasper/Code/beroeps-product-testen/Shop/Shop/obj/Debug/netcoreapp3.1/Shop.AssemblyInfo.cs
+/Users/jasper/Code/beroeps-product-testen/Shop/Shop/obj/Debug/netcoreapp3.1/Shop.dll
+/Users/jasper/Code/beroeps-product-testen/Shop/Shop/obj/Debug/netcoreapp3.1/Shop.pdb

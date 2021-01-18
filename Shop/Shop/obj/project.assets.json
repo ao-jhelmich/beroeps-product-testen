@@ -13,14 +13,14 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/jasper/Code/beroeps-product-testen/Stap1/Shop/Shop/Shop.csproj",
+      "projectUniqueName": "/Users/jasper/Code/beroeps-product-testen/Shop/Shop/Shop.csproj",
       "projectName": "Shop",
-      "projectPath": "/Users/jasper/Code/beroeps-product-testen/Stap1/Shop/Shop/Shop.csproj",
+      "projectPath": "/Users/jasper/Code/beroeps-product-testen/Shop/Shop/Shop.csproj",
       "packagesPath": "/Users/jasper/.nuget/packages/",
-      "outputPath": "/Users/jasper/Code/beroeps-product-testen/Stap1/Shop/Shop/obj/",
+      "outputPath": "/Users/jasper/Code/beroeps-product-testen/Shop/Shop/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/jasper/.config/NuGet/NuGet.Config"
+        "/Users/jasper/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
