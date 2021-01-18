@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v3.1": {
       "Shop.Tests/1.0.0": {
         "dependencies": {
+          "LiquidTestReports.Markdown": "0.2.4-beta",
           "Microsoft.NET.Test.Sdk": "16.4.0",
           "NUnit3TestAdapter": "3.15.1",
           "Shop": "1.0.0",
@@ -15,6 +16,44 @@
         },
         "runtime": {
           "Shop.Tests.dll": {}
+        }
+      },
+      "DotLiquid/2.0.333": {
+        "runtime": {
+          "lib/netstandard1.3/DotLiquid.dll": {
+            "assemblyVersion": "2.0.333.0",
+            "fileVersion": "2.0.333.0"
+          }
+        },
+        "resources": {
+          "lib/netstandard1.3/it/DotLiquid.resources.dll": {
+            "locale": "it"
+          }
+        }
+      },
+      "LiquidTestReports.Core/0.2.4-beta": {
+        "dependencies": {
+          "DotLiquid": "2.0.333",
+          "Microsoft.TestPlatform.ObjectModel": "16.6.1",
+          "System.ValueTuple": "4.5.0"
+        },
+        "runtime": {
+          "lib/netstandard2.1/LiquidTestReports.Core.dll": {
+            "assemblyVersion": "0.2.4.0",
+            "fileVersion": "0.2.4.0"
+          }
+        }
+      },
+      "LiquidTestReports.Markdown/0.2.4-beta": {
+        "dependencies": {
+          "LiquidTestReports.Core": "0.2.4-beta",
+          "Microsoft.TestPlatform.ObjectModel": "16.6.1"
+        },
+        "runtime": {
+          "lib/netstandard2.1/LiquidTestReports.Markdown.TestLogger.dll": {
+            "assemblyVersion": "0.2.4.0",
+            "fileVersion": "0.2.4.0"
+          }
         }
       },
       "Microsoft.CodeCoverage/16.4.0": {
@@ -71,7 +110,7 @@
       },
       "Microsoft.NETCore.Platforms/1.1.0": {},
       "Microsoft.NETCore.Targets/1.1.0": {},
-      "Microsoft.TestPlatform.ObjectModel/16.4.0": {
+      "Microsoft.TestPlatform.ObjectModel/16.6.1": {
         "dependencies": {
           "NuGet.Frameworks": "5.0.0"
         },
@@ -172,7 +211,7 @@
       },
       "Microsoft.TestPlatform.TestHost/16.4.0": {
         "dependencies": {
-          "Microsoft.TestPlatform.ObjectModel": "16.4.0",
+          "Microsoft.TestPlatform.ObjectModel": "16.6.1",
           "Newtonsoft.Json": "9.0.1"
         },
         "runtime": {
@@ -784,6 +823,7 @@
           "System.Runtime.Handles": "4.3.0"
         }
       },
+      "System.ValueTuple/4.5.0": {},
       "System.Xml.ReaderWriter/4.3.0": {
         "dependencies": {
           "System.Collections": "4.3.0",
@@ -879,6 +919,27 @@
       "serviceable": false,
       "sha512": ""
     },
+    "DotLiquid/2.0.333": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-JDbE5dvErMveKVZDw6TvEVbzPnX00DDaK9TJ3Zv/gxQ63IB59z5lkWYhH9XrXw2EPmzF6Sfqf4Lojnfs98TmSQ==",
+      "path": "dotliquid/2.0.333",
+      "hashPath": "dotliquid.2.0.333.nupkg.sha512"
+    },
+    "LiquidTestReports.Core/0.2.4-beta": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-KwXoH5M6xy4mYLC27kgZpWGPcB+TjAbgFRSUM58FZdxUwjRGrMw6wH5xv3d+PxY+dXZCGMvfAgSPFZivKUce4Q==",
+      "path": "liquidtestreports.core/0.2.4-beta",
+      "hashPath": "liquidtestreports.core.0.2.4-beta.nupkg.sha512"
+    },
+    "LiquidTestReports.Markdown/0.2.4-beta": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-PNYwjrj4nFWIFNWi+mPc4PR7w69eqqd/OP4gwV/6WarWSaQu0XYBGCiqySevZ/iolFTD0bIE9a+4RDxO8JaHXA==",
+      "path": "liquidtestreports.markdown/0.2.4-beta",
+      "hashPath": "liquidtestreports.markdown.0.2.4-beta.nupkg.sha512"
+    },
     "Microsoft.CodeCoverage/16.4.0": {
       "type": "package",
       "serviceable": true,
@@ -921,12 +982,12 @@
       "path": "microsoft.netcore.targets/1.1.0",
       "hashPath": "microsoft.netcore.targets.1.1.0.nupkg.sha512"
     },
-    "Microsoft.TestPlatform.ObjectModel/16.4.0": {
+    "Microsoft.TestPlatform.ObjectModel/16.6.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-4geKywSUJHHrfBTr1wJXUVWP0Vx1X03oFQAdZdGa8jK8p5MSwsJ4Vd0/mqN0dB2YXaIXIhDT94ti5WQ1KZ4jdw==",
-      "path": "microsoft.testplatform.objectmodel/16.4.0",
-      "hashPath": "microsoft.testplatform.objectmodel.16.4.0.nupkg.sha512"
+      "sha512": "sha512-QFD1oT7Rn8Pv6z8L95gDXHsgRSsQmvMrIIhSrUqsEuKwsKg4HAqlOhWRwR0/UEkFMl9NdWt2w+OH01ttcDTtkg==",
+      "path": "microsoft.testplatform.objectmodel/16.6.1",
+      "hashPath": "microsoft.testplatform.objectmodel.16.6.1.nupkg.sha512"
     },
     "Microsoft.TestPlatform.TestHost/16.4.0": {
       "type": "package",
@@ -1284,6 +1345,13 @@
       "sha512": "sha512-k/+g4b7vjdd4aix83sTgC9VG6oXYKAktSfNIJUNGxPEj7ryEOfzHHhfnmsZvjxawwcD9HyWXKCXmPjX8U4zeSw==",
       "path": "system.threading.threadpool/4.3.0",
       "hashPath": "system.threading.threadpool.4.3.0.nupkg.sha512"
+    },
+    "System.ValueTuple/4.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-okurQJO6NRE/apDIP23ajJ0hpiNmJ+f0BwOlB/cSqTLQlw5upkf+5+96+iG2Jw40G1fCVCyPz/FhIABUjMR+RQ==",
+      "path": "system.valuetuple/4.5.0",
+      "hashPath": "system.valuetuple.4.5.0.nupkg.sha512"
     },
     "System.Xml.ReaderWriter/4.3.0": {
       "type": "package",

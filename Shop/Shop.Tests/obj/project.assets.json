@@ -2,6 +2,47 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v3.1": {
+      "DotLiquid/2.0.333": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard1.3/DotLiquid.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/DotLiquid.dll": {}
+        },
+        "resource": {
+          "lib/netstandard1.3/it/DotLiquid.resources.dll": {
+            "locale": "it"
+          }
+        }
+      },
+      "LiquidTestReports.Core/0.2.4-beta": {
+        "type": "package",
+        "dependencies": {
+          "DotLiquid": "2.0.333",
+          "Microsoft.TestPlatform.ObjectModel": "16.6.1",
+          "System.ValueTuple": "4.5.0"
+        },
+        "compile": {
+          "lib/netstandard2.1/LiquidTestReports.Core.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/LiquidTestReports.Core.dll": {}
+        }
+      },
+      "LiquidTestReports.Markdown/0.2.4-beta": {
+        "type": "package",
+        "dependencies": {
+          "LiquidTestReports.Core": "0.2.4-beta",
+          "Microsoft.TestPlatform.ObjectModel": "16.6.1"
+        },
+        "compile": {
+          "lib/netstandard2.1/LiquidTestReports.Markdown.TestLogger.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/LiquidTestReports.Markdown.TestLogger.dll": {}
+        }
+      },
       "Microsoft.CodeCoverage/16.4.0": {
         "type": "package",
         "compile": {
@@ -93,7 +134,7 @@
           "lib/netstandard1.0/_._": {}
         }
       },
-      "Microsoft.TestPlatform.ObjectModel/16.4.0": {
+      "Microsoft.TestPlatform.ObjectModel/16.6.1": {
         "type": "package",
         "dependencies": {
           "NuGet.Frameworks": "5.0.0"
@@ -1115,6 +1156,15 @@
           "lib/netstandard1.3/System.Threading.ThreadPool.dll": {}
         }
       },
+      "System.ValueTuple/4.5.0": {
+        "type": "package",
+        "compile": {
+          "ref/netcoreapp2.0/_._": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/_._": {}
+        }
+      },
       "System.Xml.ReaderWriter/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -1239,6 +1289,55 @@
     }
   },
   "libraries": {
+    "DotLiquid/2.0.333": {
+      "sha512": "JDbE5dvErMveKVZDw6TvEVbzPnX00DDaK9TJ3Zv/gxQ63IB59z5lkWYhH9XrXw2EPmzF6Sfqf4Lojnfs98TmSQ==",
+      "type": "package",
+      "path": "dotliquid/2.0.333",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "dotliquid.2.0.333.nupkg.sha512",
+        "dotliquid.nuspec",
+        "lib/net45/DotLiquid.dll",
+        "lib/net45/DotLiquid.xml",
+        "lib/net45/it/DotLiquid.resources.dll",
+        "lib/netstandard1.3/DotLiquid.dll",
+        "lib/netstandard1.3/DotLiquid.xml",
+        "lib/netstandard1.3/it/DotLiquid.resources.dll",
+        "readme.txt"
+      ]
+    },
+    "LiquidTestReports.Core/0.2.4-beta": {
+      "sha512": "KwXoH5M6xy4mYLC27kgZpWGPcB+TjAbgFRSUM58FZdxUwjRGrMw6wH5xv3d+PxY+dXZCGMvfAgSPFZivKUce4Q==",
+      "type": "package",
+      "path": "liquidtestreports.core/0.2.4-beta",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "lib/net451/LiquidTestReports.Core.dll",
+        "lib/netstandard2.1/LiquidTestReports.Core.dll",
+        "liquidtestreports.core.0.2.4-beta.nupkg.sha512",
+        "liquidtestreports.core.nuspec",
+        "nuget_core.png"
+      ]
+    },
+    "LiquidTestReports.Markdown/0.2.4-beta": {
+      "sha512": "PNYwjrj4nFWIFNWi+mPc4PR7w69eqqd/OP4gwV/6WarWSaQu0XYBGCiqySevZ/iolFTD0bIE9a+4RDxO8JaHXA==",
+      "type": "package",
+      "path": "liquidtestreports.markdown/0.2.4-beta",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "lib/net451/LiquidTestReports.Markdown.TestLogger.dll",
+        "lib/netstandard2.1/LiquidTestReports.Markdown.TestLogger.dll",
+        "liquidtestreports.markdown.0.2.4-beta.nupkg.sha512",
+        "liquidtestreports.markdown.nuspec",
+        "nuget_md.png"
+      ]
+    },
     "Microsoft.CodeCoverage/16.4.0": {
       "sha512": "qb7PMVZMAY5iUCvB/kDUEt9xqazWKZoKY/sGpAJO4VtwgN5IcEgipCu3n0i1GPCwGbWVL6k4a8a9F+FqmADJng==",
       "type": "package",
@@ -1397,10 +1496,10 @@
         "runtime.json"
       ]
     },
-    "Microsoft.TestPlatform.ObjectModel/16.4.0": {
-      "sha512": "4geKywSUJHHrfBTr1wJXUVWP0Vx1X03oFQAdZdGa8jK8p5MSwsJ4Vd0/mqN0dB2YXaIXIhDT94ti5WQ1KZ4jdw==",
+    "Microsoft.TestPlatform.ObjectModel/16.6.1": {
+      "sha512": "QFD1oT7Rn8Pv6z8L95gDXHsgRSsQmvMrIIhSrUqsEuKwsKg4HAqlOhWRwR0/UEkFMl9NdWt2w+OH01ttcDTtkg==",
       "type": "package",
-      "path": "microsoft.testplatform.objectmodel/16.4.0",
+      "path": "microsoft.testplatform.objectmodel/16.6.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1462,7 +1561,7 @@
         "lib/netstandard2.0/zh-Hans/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "lib/netstandard2.0/zh-Hant/Microsoft.TestPlatform.CoreUtilities.resources.dll",
         "lib/netstandard2.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
-        "microsoft.testplatform.objectmodel.16.4.0.nupkg.sha512",
+        "microsoft.testplatform.objectmodel.16.6.1.nupkg.sha512",
         "microsoft.testplatform.objectmodel.nuspec"
       ]
     },
@@ -4371,6 +4470,50 @@
         "system.threading.threadpool.nuspec"
       ]
     },
+    "System.ValueTuple/4.5.0": {
+      "sha512": "okurQJO6NRE/apDIP23ajJ0hpiNmJ+f0BwOlB/cSqTLQlw5upkf+5+96+iG2Jw40G1fCVCyPz/FhIABUjMR+RQ==",
+      "type": "package",
+      "path": "system.valuetuple/4.5.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net461/System.ValueTuple.dll",
+        "lib/net461/System.ValueTuple.xml",
+        "lib/net47/System.ValueTuple.dll",
+        "lib/net47/System.ValueTuple.xml",
+        "lib/netcoreapp2.0/_._",
+        "lib/netstandard1.0/System.ValueTuple.dll",
+        "lib/netstandard1.0/System.ValueTuple.xml",
+        "lib/netstandard2.0/_._",
+        "lib/portable-net40+sl4+win8+wp8/System.ValueTuple.dll",
+        "lib/portable-net40+sl4+win8+wp8/System.ValueTuple.xml",
+        "lib/uap10.0.16299/_._",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net461/System.ValueTuple.dll",
+        "ref/net47/System.ValueTuple.dll",
+        "ref/netcoreapp2.0/_._",
+        "ref/netstandard2.0/_._",
+        "ref/portable-net40+sl4+win8+wp8/System.ValueTuple.dll",
+        "ref/uap10.0.16299/_._",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "system.valuetuple.4.5.0.nupkg.sha512",
+        "system.valuetuple.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
     "System.Xml.ReaderWriter/4.3.0": {
       "sha512": "GrprA+Z0RUXaR4N7/eW71j1rgMnEnEVlgii49GZyAjTH7uliMnrOU3HNFBr6fEDBCJCIdlVNq9hHbaDR621XBA==",
       "type": "package",
@@ -4637,6 +4780,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
+      "LiquidTestReports.Markdown >= 0.2.4-beta",
       "Microsoft.NET.Test.Sdk >= 16.4.0",
       "NUnit3TestAdapter >= 3.15.1",
       "Shop >= 1.0.0",
@@ -4649,14 +4793,14 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/jasper/Code/beroeps-product-testen/Stap1/Shop/Shop.Tests/Shop.Tests.csproj",
+      "projectUniqueName": "/Users/jasper/Code/beroeps-product-testen/Shop/Shop.Tests/Shop.Tests.csproj",
       "projectName": "Shop.Tests",
-      "projectPath": "/Users/jasper/Code/beroeps-product-testen/Stap1/Shop/Shop.Tests/Shop.Tests.csproj",
+      "projectPath": "/Users/jasper/Code/beroeps-product-testen/Shop/Shop.Tests/Shop.Tests.csproj",
       "packagesPath": "/Users/jasper/.nuget/packages/",
-      "outputPath": "/Users/jasper/Code/beroeps-product-testen/Stap1/Shop/Shop.Tests/obj/",
+      "outputPath": "/Users/jasper/Code/beroeps-product-testen/Shop/Shop.Tests/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/jasper/.config/NuGet/NuGet.Config"
+        "/Users/jasper/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
@@ -4667,8 +4811,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "/Users/jasper/Code/beroeps-product-testen/Stap1/Shop/Shop/Shop.csproj": {
-              "projectPath": "/Users/jasper/Code/beroeps-product-testen/Stap1/Shop/Shop/Shop.csproj"
+            "/Users/jasper/Code/beroeps-product-testen/Shop/Shop/Shop.csproj": {
+              "projectPath": "/Users/jasper/Code/beroeps-product-testen/Shop/Shop/Shop.csproj"
             }
           }
         }
@@ -4682,6 +4826,10 @@
     "frameworks": {
       "netcoreapp3.1": {
         "dependencies": {
+          "LiquidTestReports.Markdown": {
+            "target": "Package",
+            "version": "[0.2.4-beta, )"
+          },
           "Microsoft.NET.Test.Sdk": {
             "target": "Package",
             "version": "[16.4.0, )"
