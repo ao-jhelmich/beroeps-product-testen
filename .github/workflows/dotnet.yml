@@ -8,17 +8,17 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        dotnet-version: [ '2.2.103', '3.0', '3.1.x' ]
+        dotnet-version: '2.2.103'
 
     steps:
     - name: Install dependencies
-      working-directory: ./Shop/Shop.Tests
+      working-directory: ./Shop
       run: dotnet restore
 
     - name: Build
       run: dotnet build --configuration Release --no-restore
-      working-directory: ./Shop/Shop.Tests
+      working-directory: ./Shop
 
     - name: Test
       run: dotnet test --no-restore --verbosity normal
-      working-directory: ./Shop/Shop.Tests
+      working-directory: ./Shop
