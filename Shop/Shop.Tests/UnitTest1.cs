@@ -58,7 +58,6 @@ namespace Shop.Tests
         {
             double result = determineShippingCosts.ShippingCosts(true, "SecondDayAir", 1);
 
-
             Assert.AreEqual(125, result);
         }
     }
